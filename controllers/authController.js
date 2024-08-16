@@ -109,7 +109,7 @@ const generateRefreshToken = (user) => {
 const generateAccessToken = (user) => {
     try {
         const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_PRIVATE_KEY, {
-            expiresIn: '15m'
+            expiresIn: '1y'
         })
         return accessToken;
     } catch (e) {
