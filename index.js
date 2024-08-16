@@ -18,10 +18,7 @@ const app = express();
 app.use(express.json({limit: '10mb'}));
 app.use(morgan('common'));
 app.use(cookieParser());
-app.use(session({ secret: 'your-secret', resave: false, saveUninitialized: true, cookie: {
-    secure: process.env.NODE_ENV === 'production', // ensures cookies are only sent over HTTPS
-    httpOnly: true
-} }));
+app.use(session({ secret: 'your-secret', resave: false, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -33,7 +30,7 @@ app.use(cors({
 }))
 
 app.use('/api/auth', authRouter);
-app.use('api/user', userRouter);
+app.use('/api/user', userRouter);
 
 app.get('/', (req,res)=>{
     res.status(200).send("ok from cobalt server");

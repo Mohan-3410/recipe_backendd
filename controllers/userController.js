@@ -5,9 +5,9 @@ const { error, success } = require("../utils/responseWrapper");
 const getMyInfoController = async (req, res) => {
     try {
         const user = await User.findById(req._id);
-        return res.send(success(200, { user }));
+        return res.json(success(200, { user }));
     } catch (e) {
-        return res.send(error(500, e.message));
+        return res.json(error(500, e.message));
     }
 
 }
