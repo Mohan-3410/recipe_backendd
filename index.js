@@ -18,15 +18,15 @@ const app = express();
 app.use(express.json({limit: '10mb'}));
 app.use(morgan('common'));
 app.use(cookieParser());
-app.use(session({ secret: 'your-secret', resave: false, saveUninitialized: true }));
+app.use(session({ secret: 'your-secret', resave: false, saveUninitialized: true, cookie: {
+    secure: process.env.NODE_ENV === 'production', // ensures cookies are only sent over HTTPS
+    httpOnly: true
+} }));
 app.use(passport.initialize());
 app.use(passport.session());
 
-let origin = 'http://localhost:3000';
-console.log("here env", process.env.NODE_ENV)
-if(process.env.NODE_ENV === 'production') {
-    origin = process.env.FRONTEND_HOST
-}
+let origin = process.env.FRONTEND_HOST
+
 app.use(cors({
     credentials: true,
     origin
