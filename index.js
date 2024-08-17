@@ -9,6 +9,7 @@ const passport = require('passport');
 const session = require('express-session');
 const cors = require('cors');
 const { error, success } = require('./utils/responseWrapper');
+const { generateAccessToken, generateRefreshToken } = require('./controllers/authController');
 dotenv.config({path: "./.env" })
 require('./config/passport');
 
@@ -40,7 +41,13 @@ app.get('/', (req,res)=>{
 app.get('/auth/google', passport.authenticate('google', {scope: ['profile', 'email'] }));
 app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: `${process.env.FRONTEND_HOST}/login` }),
   (req, res) => {
-    res.redirect(`${process.env.FRONTEND_HOST}/`);
+    const accessToken = generateAccessToken({ _id: req.user._id });
+    const refreshToken = generateRefreshToken({ _id: req.user._id });
+    res.cookie('jwt', refreshToken, {
+      httpOnly: true,
+      secure: true,
+    });
+    res.redirect(`${process.env.FRONTEND_HOST}/?accessToken=${accessToken}`);
   }
 );
 app.get('/login/success', async(req, res) => {

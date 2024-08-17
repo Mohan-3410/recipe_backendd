@@ -8,7 +8,7 @@ const passport = require('passport');
         new GoogleStrategy({
             clientID: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            callbackURL: `https://recipe-backend-h8gp.onrender.com/auth/google/callback`
+            callbackURL: `/auth/google/callback`
         }, async (accessToken, refreshToken, profile, done) => {
             console.log(profile)
             const { email, name, picture } = profile._json;
